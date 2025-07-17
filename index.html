@@ -322,7 +322,6 @@
         /* SECTION 3: FOUR ARCHETYPES */
         .four-archetypes {
             background: var(--dark-surface);
-            position: relative;
         }
         
         .section-title {
@@ -342,139 +341,115 @@
         }
         
         .cards-grid {
-            display: grid !important;
-            grid-template-columns: 1fr 1fr !important;
-            gap: 2rem !important;
-            max-width: 1000px !important;
-            margin: 0 auto 3rem !important;
-            padding: 2rem 1rem !important;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto 3rem;
+            z-index: 10;
+            position: relative;
         }
         
         .gaze-card {
-            width: 100% !important;
-            height: 400px !important;
-            background: var(--primary-red) !important;
-            border: 3px solid var(--accent-red) !important;
-            border-radius: 10px !important;
-            cursor: pointer !important;
-            perspective: 1000px !important;
-            position: relative !important;
-            display: block !important;
-            visibility: visible !important;
-            opacity: 1 !important;
+            width: 100%;
+            height: 550px;
+            position: relative;
+            cursor: pointer;
+            perspective: 1000px;
+            z-index: 15;
+        }
+        
+        .gaze-card:hover {
+            transform: translateY(-5px);
+            transition: transform 0.3s ease;
         }
         
         .card-inner {
-            position: relative !important;
-            width: 100% !important;
-            height: 100% !important;
-            transition: transform 0.8s !important;
-            transform-style: preserve-3d !important;
-            display: block !important;
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s ease;
+            transform-style: preserve-3d;
         }
         
         .gaze-card.flipped .card-inner {
-            transform: rotateY(180deg) !important;
+            transform: rotateY(180deg);
         }
         
         .card-front, .card-back {
-            position: absolute !important;
-            width: 100% !important;
-            height: 100% !important;
-            backface-visibility: hidden !important;
-            border-radius: 10px !important;
-            display: flex !important;
-            flex-direction: column !important;
-            justify-content: center !important;
-            align-items: center !important;
-            padding: 2rem !important;
-            color: white !important;
-        }
-        
-        .card-front {
-            background: linear-gradient(135deg, #8b0000, #dc2626) !important;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 3rem 2.5rem;
+            border: 2px solid rgba(220, 38, 38, 0.4);
+            backdrop-filter: blur(10px);
+            box-shadow: 
+                0 12px 40px rgba(0, 0, 0, 0.6),
+                inset 0 0 20px rgba(220, 38, 38, 0.1);
+            transition: all 0.3s ease;
         }
         
         .card-back {
-            background: linear-gradient(135deg, #991b1b, #dc2626) !important;
-            transform: rotateY(180deg) !important;
-            text-align: center !important;
-        }
-        
-        /* Individual card backgrounds */
-        .consuming .card-front {
-            background: linear-gradient(135deg, #8b0000, #dc2626) !important;
-        }
-        
-        .consuming .card-back {
-            background: linear-gradient(135deg, #8b0000, #dc2626) !important;
-        }
-        
-        .judging .card-front {
-            background: linear-gradient(135deg, #1e1b4b, #dc2626) !important;
-        }
-        
-        .judging .card-back {
-            background: linear-gradient(135deg, #1e1b4b, #dc2626) !important;
-        }
-        
-        .indifferent .card-front {
-            background: linear-gradient(135deg, #374151, #dc2626) !important;
-        }
-        
-        .indifferent .card-back {
-            background: linear-gradient(135deg, #374151, #dc2626) !important;
-        }
-        
-        .sacred .card-front {
-            background: linear-gradient(135deg, #dc2626, #fbbf24) !important;
-        }
-        
-        .sacred .card-back {
-            background: linear-gradient(135deg, #dc2626, #fbbf24) !important;
-        }
-        
-        .card-icon {
-            font-size: 3rem !important;
-            margin-bottom: 1rem !important;
-            color: white !important;
-            display: block !important;
-        }
-        
-        .card-title {
-            font-family: 'Playfair Display', serif !important;
-            font-size: 1.3rem !important;
-            margin-bottom: 1rem !important;
-            color: white !important;
-            font-weight: 600 !important;
-            text-align: center !important;
-            display: block !important;
+            transform: rotateY(180deg);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            text-align: center;
+            padding: 3rem 2.5rem;
+            justify-content: center;
         }
         
         .card-back p {
-            color: white !important;
-            margin-bottom: 1rem !important;
-            text-align: center !important;
-            line-height: 1.5 !important;
-            font-size: 0.95rem !important;
+            color: var(--soft-white);
+            margin-bottom: 1.8rem;
+            text-align: center;
+            max-width: 100%;
+        }
+        
+        /* Individual card colors blended with red theme */
+        .consuming .card-front, .consuming .card-back {
+            background: linear-gradient(135deg, rgba(139, 0, 0, 0.9), rgba(220, 38, 38, 0.9));
+        }
+        
+        .judging .card-front, .judging .card-back {
+            background: linear-gradient(135deg, rgba(30, 27, 75, 0.9), rgba(220, 38, 38, 0.9));
+        }
+        
+        .indifferent .card-front, .indifferent .card-back {
+            background: linear-gradient(135deg, rgba(55, 65, 81, 0.9), rgba(220, 38, 38, 0.9));
+        }
+        
+        .sacred .card-front, .sacred .card-back {
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.9), rgba(251, 191, 36, 0.9));
+        }
+        
+        .card-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--pure-white);
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+        
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--pure-white);
+            font-weight: 600;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
         
         .card-back .journal-whisper {
-            color: #fbbf24 !important;
-            font-style: italic !important;
-            margin-top: 1rem !important;
-            font-size: 0.9rem !important;
-        }
-        
-        .archetypes-reflection {
-            text-align: center;
-            max-width: 600px;
-            margin: 0 auto 2rem;
-            padding: 2rem;
-            background: rgba(220, 38, 38, 0.05);
-            border: 1px solid rgba(220, 38, 38, 0.2);
-            border-radius: 8px;
-            color: var(--gray-text);
+            color: var(--accent-red);
+            font-style: italic;
+            margin-top: 1rem;
+            font-weight: 500;
         }
         
         .archetypes-reflection {
@@ -794,17 +769,21 @@
             .cards-grid { 
                 grid-template-columns: 1fr; 
                 gap: 2rem; 
-                max-width: 380px;
+                max-width: 400px;
             }
             .gaze-card {
-                height: 500px;
+                height: 520px;
             }
             .card-front, .card-back {
-                padding: 2rem 1.8rem;
+                padding: 2.5rem 2rem;
             }
             .card-back {
-                padding: 2rem 1.8rem;
-                font-size: 0.95rem;
+                padding: 2.5rem 2rem;
+                font-size: 1rem;
+                line-height: 1.7;
+            }
+            .card-back p {
+                margin-bottom: 1.5rem;
             }
             .card-icon {
                 font-size: 2.8rem;
