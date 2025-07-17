@@ -208,16 +208,62 @@
             top: 0;
             width: 2px;
             height: 100%;
-            background: linear-gradient(to bottom, var(--primary-red), rgba(220, 38, 38, 0.3));
+            background: transparent;
             transform: translateX(-50%);
-            box-shadow: 0 0 20px rgba(220, 38, 38, 0.5);
-            opacity: 0.3;
-            animation: pathGlow 3s ease-in-out infinite alternate;
+            z-index: 1;
         }
         
-        @keyframes pathGlow {
-            0% { opacity: 0.3; box-shadow: 0 0 20px rgba(220, 38, 38, 0.3); }
-            100% { opacity: 0.7; box-shadow: 0 0 30px rgba(220, 38, 38, 0.6); }
+        .connection-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+        
+        .flowing-wire {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, var(--primary-red), transparent);
+            height: 1px;
+            animation: flowWire 4s ease-in-out infinite;
+        }
+        
+        .vertical-wire {
+            position: absolute;
+            background: linear-gradient(0deg, transparent, var(--primary-red), transparent);
+            width: 1px;
+            animation: flowVertical 3s ease-in-out infinite;
+        }
+        
+        @keyframes flowWire {
+            0% { width: 0; opacity: 0; }
+            50% { width: 200px; opacity: 1; box-shadow: 0 0 10px var(--primary-red); }
+            100% { width: 0; opacity: 0; }
+        }
+        
+        @keyframes flowVertical {
+            0% { height: 0; opacity: 0; }
+            50% { height: 150px; opacity: 1; box-shadow: 0 0 10px var(--primary-red); }
+            100% { height: 0; opacity: 0; }
+        }
+        
+        .neural-network {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .neural-node {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--accent-red);
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--accent-red);
+            animation: pulse 2s ease-in-out infinite;
         }
         
         .journal-grid {
@@ -297,14 +343,14 @@
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 2rem;
-            max-width: 800px;
+            gap: 3rem;
+            max-width: 1000px;
             margin: 0 auto 3rem;
         }
         
         .gaze-card {
             width: 100%;
-            height: 400px;
+            height: 500px;
             position: relative;
             cursor: pointer;
             perspective: 1000px;
@@ -333,7 +379,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 2rem;
+            padding: 3rem 2rem;
             border: 1px solid rgba(220, 38, 38, 0.3);
             backdrop-filter: blur(10px);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
@@ -341,8 +387,15 @@
         
         .card-back {
             transform: rotateY(180deg);
-            font-size: 0.95rem;
-            line-height: 1.6;
+            font-size: 1rem;
+            line-height: 1.7;
+            text-align: center;
+            padding: 2.5rem 2rem;
+        }
+        
+        .card-back p {
+            color: var(--gray-text);
+            margin-bottom: 1.5rem;
         }
         
         /* Individual card colors blended with red theme */
@@ -365,7 +418,7 @@
         .card-icon {
             font-size: 3rem;
             margin-bottom: 1rem;
-            color: var(--accent-red);
+            color: var(--pure-white);
         }
         
         .card-title {
@@ -524,28 +577,103 @@
             box-shadow: 0 2px 10px rgba(220, 38, 38, 0.3);
         }
         
-        .thank-you-note {
-            margin-top: 2rem;
-            padding: 1.5rem;
-            background: rgba(220, 38, 38, 0.1);
-            border: 1px solid rgba(220, 38, 38, 0.3);
-            border-radius: 8px;
-            color: var(--pure-white);
-            font-style: italic;
-            text-align: center;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.8s ease;
+        .signature-submit {
+            background: transparent;
+            border: 2px solid var(--primary-red);
+            color: var(--primary-red);
+            padding: 0.8rem 2rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            margin: 1rem 0;
+            border-radius: 4px;
         }
         
-        .thank-you-note.visible {
+        .signature-submit:hover {
+            background: var(--primary-red);
+            color: var(--pure-white);
+            box-shadow: 0 0 20px rgba(220, 38, 38, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .signature-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .thank-you-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+        }
+        
+        .thank-you-modal.visible {
             opacity: 1;
-            transform: translateY(0);
+            visibility: visible;
+        }
+        
+        .thank-you-content {
+            background: rgba(15, 15, 15, 0.95);
+            border: 2px solid var(--primary-red);
+            border-radius: 10px;
+            padding: 3rem;
+            max-width: 500px;
+            text-align: center;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 0 50px rgba(220, 38, 38, 0.3);
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+        }
+        
+        .thank-you-modal.visible .thank-you-content {
+            transform: scale(1);
+        }
+        
+        .thank-you-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--pure-white);
+            margin-bottom: 1rem;
+        }
+        
+        .thank-you-message {
+            color: var(--gray-text);
+            margin-bottom: 2rem;
+            line-height: 1.6;
         }
         
         .saved-signature {
             color: var(--accent-red);
             font-weight: 600;
+            font-style: italic;
+        }
+        
+        .close-modal {
+            background: var(--primary-red);
+            color: var(--pure-white);
+            border: none;
+            padding: 1rem 2rem;
+            font-family: 'Playfair Display', serif;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        .close-modal:hover {
+            background: var(--accent-red);
+            box-shadow: 0 0 20px rgba(220, 38, 38, 0.5);
         }
         
         /* Transition Elements */
@@ -809,7 +937,12 @@
                 <p>With love and fierce hope,<br>
                 <em>Those who chose to shine</em></p>
                 
-                <input type="text" class="signature-input" placeholder="Your signature here..." onchange="createConstellation()">
+                <input type="text" class="signature-input" placeholder="Your signature here..." oninput="handleSignature(this)">
+                
+                <div class="thank-you-note" id="thank-you-note">
+                    <p>Thank you, <span class="saved-signature" id="saved-name"></span>, for adding your light to this sacred mirror.</p>
+                    <p><em>Your signature has been witnessed and remembered.</em></p>
+                </div>
             </div>
         </div>
     </section>
@@ -822,6 +955,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             createParticles();
             setupScrollObserver();
+            loadSavedSignature();
             // Make first section visible immediately
             document.getElementById('section-0').classList.add('visible');
         });
@@ -923,10 +1057,66 @@
             card.classList.toggle('flipped');
         }
 
-        // Constellation effect (placeholder)
+        // Handle signature input
+        function handleSignature(input) {
+            const signature = input.value.trim();
+            if (signature.length > 2) {
+                // Save signature temporarily (in memory)
+                sessionStorage.setItem('miroir_signature', signature);
+                
+                // Show thank you note
+                const thankYouNote = document.getElementById('thank-you-note');
+                const savedName = document.getElementById('saved-name');
+                
+                savedName.textContent = signature;
+                thankYouNote.classList.add('visible');
+                
+                // Create constellation effect
+                createConstellation();
+            } else {
+                // Hide thank you note if signature is too short
+                const thankYouNote = document.getElementById('thank-you-note');
+                thankYouNote.classList.remove('visible');
+            }
+        }
+
+        // Load saved signature on page load
+        function loadSavedSignature() {
+            const savedSignature = sessionStorage.getItem('miroir_signature');
+            if (savedSignature) {
+                const signatureInput = document.querySelector('.signature-input');
+                const thankYouNote = document.getElementById('thank-you-note');
+                const savedName = document.getElementById('saved-name');
+                
+                signatureInput.value = savedSignature;
+                savedName.textContent = savedSignature;
+                thankYouNote.classList.add('visible');
+            }
+        }
+
+        // Constellation effect
         function createConstellation() {
-            // Add constellation effect here if needed
-            console.log('Constellation created');
+            // Add more red particles when signature is added
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 10; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.width = '3px';
+                particle.style.height = '3px';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.background = '#ef4444';
+                particle.style.boxShadow = '0 0 15px #ef4444';
+                particle.style.animationDuration = '3s';
+                particlesContainer.appendChild(particle);
+                
+                // Remove after animation
+                setTimeout(() => {
+                    if (particle.parentNode) {
+                        particle.parentNode.removeChild(particle);
+                    }
+                }, 3000);
+            }
         }
 
         // Keyboard navigation
