@@ -205,10 +205,10 @@
         .walk-path {
             position: absolute;
             left: 50%;
-            top: 0;
-            width: 2px;
-            height: 100%;
-            background: transparent;
+            top: 15%;
+            width: 1px;
+            height: 70%;
+            background: linear-gradient(to bottom, transparent 0%, rgba(220, 38, 38, 0.3) 20%, rgba(220, 38, 38, 0.3) 80%, transparent 100%);
             transform: translateX(-50%);
             z-index: 1;
         }
@@ -319,119 +319,219 @@
             margin-bottom: 1rem;
         }
         
-       .sacred-initiation {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 4rem 2rem;
-  background: #fafafa;
-  flex-wrap: wrap;
-  gap: 2rem;
-}
-
-.sacred-climax {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
-  width: 100%;
-  max-width: 1200px;
-}
-
-.sacred-figure {
-  position: relative;
-  background: white;
-  border-radius: 2rem;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  padding: 2rem;
-  transition: transform 0.6s ease;
-  perspective: 1000px;
-  overflow: hidden;
-  text-align: center;
-}
-
-.sacred-figure:hover {
-  transform: scale(1.03);
-}
-
-.sacred-figure::before {
-  content: attr(data-gaze);
-  position: absolute;
-  top: -1.5rem;
-  right: -1.5rem;
-  font-size: 4rem;
-  animation: floatEmoji 3s infinite ease-in-out;
-}
-
-@keyframes floatEmoji {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-}
-
-/* Unique gaze colors and emojis */
-.sacred-figure[data-gaze="🔴"] {
-  border-top: 8px solid crimson;
-  background: linear-gradient(to bottom, #ff0000, #330000);
-}
-
-.sacred-figure[data-gaze="🔵"] {
-  border-top: 8px solid #4a148c;
-  background: linear-gradient(to bottom, #2962ff, #ff1744);
-}
-
-.sacred-figure[data-gaze="⚫"] {
-  border-top: 8px solid #424242;
-  background: linear-gradient(to bottom, #9e9e9e, #b71c1c);
-}
-
-.sacred-figure[data-gaze="🟡"] {
-  border-top: 8px solid gold;
-  background: linear-gradient(to bottom, #ffd700, #b71c1c);
-}
-
-.sacred-text h3 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 0.75rem;
-  color: #fff;
-  text-transform: uppercase;
-}
-
-.sacred-text p {
-  font-size: 1rem;
-  line-height: 1.6;
-  color: #f0f0f0;
-  padding: 0 0.5rem;
-}
-
-/* Flip support (optional) */
-.sacred-figure.flippable {
-  transform-style: preserve-3d;
-  cursor: pointer;
-}
-
-.sacred-figure.flipped {
-  transform: rotateY(180deg);
-}
-
-.sacred-text {
-  backface-visibility: hidden;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .sacred-figure {
-    padding: 1.5rem;
-  }
-
-  .sacred-text h3 {
-    font-size: 1.25rem;
-  }
-
-  .sacred-text p {
-    font-size: 0.95rem;
-  }
-}
-
+        /* SECTION 3: FOUR ARCHETYPES */
+        .four-archetypes {
+            background: var(--dark-surface);
+        }
+        
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--pure-white);
+            text-align: center;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            color: var(--accent-red);
+            margin-bottom: 3rem;
+            font-style: italic;
+        }
+        
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2.5rem;
+            max-width: 1200px;
+            margin: 0 auto 3rem;
+            z-index: 10;
+            position: relative;
+        }
+        
+        .gaze-card {
+            width: 100%;
+            height: 540px;
+            position: relative;
+            cursor: pointer;
+            perspective: 1000px;
+            z-index: 15;
+        }
+        
+        .gaze-card:hover {
+            transform: translateY(-5px);
+            transition: transform 0.3s ease;
+        }
+        
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s ease;
+            transform-style: preserve-3d;
+        }
+        
+        .gaze-card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2.5rem;
+            border: 2px solid rgba(220, 38, 38, 0.4);
+            backdrop-filter: blur(10px);
+            box-shadow: 
+                0 12px 40px rgba(0, 0, 0, 0.6),
+                inset 0 0 20px rgba(220, 38, 38, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .card-back {
+            transform: rotateY(180deg);
+            font-size: 1.05rem;
+            line-height: 1.7;
+            text-align: center;
+            padding: 2.5rem;
+            justify-content: flex-start;
+        }
+        
+        .card-back p {
+            color: var(--soft-white);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        /* Individual card colors blended with red theme */
+        .consuming .card-front, .consuming .card-back {
+            background: linear-gradient(135deg, rgba(139, 0, 0, 0.9), rgba(220, 38, 38, 0.9));
+        }
+        
+        .judging .card-front, .judging .card-back {
+            background: linear-gradient(135deg, rgba(30, 27, 75, 0.9), rgba(220, 38, 38, 0.9));
+        }
+        
+        .indifferent .card-front, .indifferent .card-back {
+            background: linear-gradient(135deg, rgba(55, 65, 81, 0.9), rgba(220, 38, 38, 0.9));
+        }
+        
+        .sacred .card-front, .sacred .card-back {
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.9), rgba(251, 191, 36, 0.9));
+        }
+        
+        .card-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--pure-white);
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+        
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--pure-white);
+            font-weight: 600;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        
+        .card-back .journal-whisper {
+            color: var(--accent-red);
+            font-style: italic;
+            margin-top: 1rem;
+            font-weight: 500;
+        }
+        
+        .archetypes-reflection {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            padding: 2rem;
+            background: rgba(220, 38, 38, 0.05);
+            border: 1px solid rgba(220, 38, 38, 0.2);
+            border-radius: 8px;
+            color: var(--gray-text);
+        }
+        
+        /* SECTION 4: SACRED FEMININE */
+        .sacred-feminine {
+            background: radial-gradient(circle at center, rgba(220, 38, 38, 0.1) 0%, var(--dark-base) 70%);
+        }
+        
+        .sacred-threshold {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 1rem 2rem;
+            color: var(--accent-red);
+            font-style: italic;
+            background: rgba(220, 38, 38, 0.05);
+            border: 1px solid rgba(220, 38, 38, 0.2);
+            border-radius: 6px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .sacred-figure {
+            width: 150px;
+            height: 200px;
+            background: rgba(220, 38, 38, 0.2);
+            margin: 2rem auto;
+            clip-path: polygon(50% 0%, 20% 40%, 30% 100%, 70% 100%, 80% 40%);
+            animation: pulse 4s ease-in-out infinite;
+            border: 1px solid var(--accent-red);
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
+        
+        .sacred-text {
+            max-width: 650px;
+            margin: 0 auto 3rem;
+            text-align: center;
+            color: var(--gray-text);
+        }
+        
+        .sacred-text p {
+            margin-bottom: 1.5rem;
+        }
+        
+        .sacred-climax {
+            font-style: italic;
+            color: var(--pure-white);
+            font-size: 1.3rem;
+            margin: 2rem auto 1.5rem;
+            padding: 2rem;
+            text-align: center;
+            background: rgba(220, 38, 38, 0.1);
+            border: 2px solid var(--primary-red);
+            border-radius: 8px;
+            max-width: 500px;
+            box-shadow: 0 0 30px rgba(220, 38, 38, 0.3);
+        }
+        
+        .sacred-initiation {
+            margin: 1.5rem auto 1rem;
+            padding: 1.5rem 2rem;
+            background: rgba(15, 15, 15, 0.8);
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            border-radius: 8px;
+            max-width: 600px;
+            text-align: center;
+            color: var(--accent-red);
+            font-style: italic;
+        }
         
         /* SECTION 5: FINAL LETTER */
         .final-letter {
@@ -517,6 +617,38 @@
             cursor: not-allowed;
         }
         
+        .thank-you-note {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(220, 38, 38, 0.1);
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            border-radius: 8px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+        
+        .thank-you-note.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .thank-you-note p {
+            color: var(--gray-text);
+            margin-bottom: 1rem;
+        }
+        
+        .thank-you-note p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .saved-signature {
+            color: var(--accent-red);
+            font-weight: 600;
+            font-style: italic;
+        }
+        
         .thank-you-modal {
             position: fixed;
             top: 0;
@@ -566,12 +698,6 @@
             color: var(--gray-text);
             margin-bottom: 2rem;
             line-height: 1.6;
-        }
-        
-        .saved-signature {
-            color: var(--accent-red);
-            font-weight: 600;
-            font-style: italic;
         }
         
         .close-modal {
@@ -642,10 +768,24 @@
             .cards-grid { 
                 grid-template-columns: 1fr; 
                 gap: 2rem; 
-                max-width: 400px;
+                max-width: 380px;
             }
-            .gaze-card { 
-                height: 450px;
+            .gaze-card {
+                height: 500px;
+            }
+            .card-front, .card-back {
+                padding: 2rem 1.8rem;
+            }
+            .card-back {
+                padding: 2rem 1.8rem;
+                font-size: 0.95rem;
+            }
+            .card-icon {
+                font-size: 2.8rem;
+                margin-bottom: 1rem;
+            }
+            .card-title {
+                font-size: 1.3rem;
             }
             .journal-grid { grid-template-columns: 1fr; gap: 1.5rem; }
             .letter-container { padding: 2rem; }
@@ -654,12 +794,6 @@
             .transition-line { margin: 1.5rem auto 0.8rem; }
             .sacred-climax { margin: 1.5rem auto 1rem; }
             .sacred-initiation { margin: 1rem auto 0.8rem; }
-            .thank-you-content { 
-                padding: 2rem;
-                margin: 1rem;
-                max-width: 90%;
-            }
-            .connection-lines { display: none; }
         }
     </style>
 </head>
@@ -677,49 +811,35 @@
     </div>
 
     <!-- Section 1: Opening Mirror -->
-   <section class="sacred-initiation">
-  <div class="sacred-climax">
-
-    <!-- 🔴 Consuming Gaze -->
-    <div class="sacred-figure" style="background: linear-gradient(135deg, #8B0000, #FF0000); padding: 1.5rem; border-radius: 1rem;">
-      <div class="sacred-text">
-        <h3 style="display: flex; align-items: center; gap: 0.5rem;">🔥 Consuming Gaze</h3>
-        <p>This gaze devours difference like fire — staring too long, demanding explanation. It feeds off visibility, punishing those who break the norm. It's not curiosity, it's consumption. It teaches us how attention becomes surveillance.</p>
-      </div>
-    </div>
-
-    <!-- 🔵 Judging Gaze -->
-    <div class="sacred-figure" style="background: linear-gradient(135deg, #1E3A8A, #FF4C4C); padding: 1.5rem; border-radius: 1rem;">
-      <div class="sacred-text">
-        <h3 style="display: flex; align-items: center; gap: 0.5rem;">🧠 Judging Gaze</h3>
-        <p>With eyes of cold calculation, this gaze evaluates, ranks, and reduces. It pretends to be rational, but it's rooted in bias. It creates fear of failure, need for perfection. It's the system's favorite tool for control.</p>
-      </div>
-    </div>
-
-    <!-- ⚫ Indifferent Gaze -->
-    <div class="sacred-figure" style="background: linear-gradient(135deg, #4B5563, #990000); padding: 1.5rem; border-radius: 1rem;">
-      <div class="sacred-text">
-        <h3 style="display: flex; align-items: center; gap: 0.5rem;">😶‍🌫️ Indifferent Gaze</h3>
-        <p>This gaze sees, but chooses not to act. It reflects a society numbed by repetition, fear, or complicity. It lets injustice survive through silence. It's not neutrality — it's quiet compliance.</p>
-      </div>
-    </div>
-
-    <!-- 🟡 Sacred Gaze -->
-    <div class="sacred-figure" style="background: linear-gradient(135deg, #FFD700, #8B0000); padding: 1.5rem; border-radius: 1rem;">
-      <div class="sacred-text">
-        <h3 style="display: flex; align-items: center; gap: 0.5rem;">✨ Sacred Gaze</h3>
-        <p>This is the rarest gaze — one that witnesses with reverence. It sees truth without attacking, honors difference without fear. It disarms shame and turns vulnerability into power. It’s the gaze we are reclaiming.</p>
-      </div>
-    </div>
-
-  </div>
-</section>
-
+    <section class="section opening-mirror" id="section-0">
+        <h1 class="title-main">MIROIR</h1>
+        <p class="title-sub">The Cost of Being Visible</p>
+        
+        <div class="mirror-frame" onclick="nextSection()">
+            <div class="mirror-surface"></div>
+        </div>
+        
+        <div class="opening-text">
+            <p><em>What does it cost to be truly seen?</em></p>
+            <p>We arrive at mirrors seeking recognition, but find ourselves fractured in the glass. Each reflection splits us—the self we perform, the self we hide, the self we long to become. Here, at the threshold of visibility, we must ask: Are we willing to pay the price of being witnessed?</p>
+            <p>This is not about vanity. This is about survival in a world that demands we show ourselves while punishing us for existing. Every time we step into light, we risk the gaze that reduces, that commodifies, that judges. Yet still we come, drawn by the ancient human need to be seen, to be known, to matter.</p>
+            <p>The mirror does not lie, but it does not tell the whole truth either. It shows only surfaces, only moments, only the fraction of ourselves we can bear to reveal.</p>
+        </div>
+        
+        <div class="symbolic-line">
+            The rest remain safely hidden in the silvered depths.
+        </div>
+        
+        <button class="enter-btn" onclick="nextSection()">Enter, if you dare to look</button>
+        
+        <div class="transition-line">
+            The mirror cracks. The journey begins.
+        </div>
+    </section>
 
     <!-- Section 2: The Walk -->
     <section class="section the-walk" id="section-1">
         <div class="walk-path"></div>
-        <div class="connection-lines" id="connection-lines"></div>
         
         <h2 class="section-title">THE WALK</h2>
         <p class="section-subtitle">The Journey into Visibility</p>
@@ -756,78 +876,73 @@
         </div>
     </section>
 
-   <!-- Section 3: Four Archetypes -->
-<section class="section four-archetypes" id="section-2">
-  <h2 class="section-title">FOUR ARCHETYPES OF THE GAZE</h2>
-  <p class="section-subtitle">How We Are Seen, How We See</p>
-
-  <div class="cards-grid">
-    <!-- Consuming Gaze -->
-    <div class="gaze-card consuming" onclick="flipCard(this)">
-      <div class="card-inner">
-        <div class="card-front">
-          <div class="card-icon animated-icon">👁️</div>
-          <h3 class="card-title">The Consuming Gaze</h3>
+    <!-- Section 3: Four Archetypes -->
+    <section class="section four-archetypes" id="section-2">
+        <h2 class="section-title">FOUR ARCHETYPES OF THE GAZE</h2>
+        <p class="section-subtitle">How We Are Seen, How We See</p>
+        
+        <div class="cards-grid">
+            <div class="gaze-card consuming" onclick="flipCard(this)">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="card-icon">👁️</div>
+                        <h3 class="card-title">The Consuming Gaze</h3>
+                    </div>
+                    <div class="card-back">
+                        <p>The Consuming Gaze devours what it sees, takes without asking, reduces us to appetites and commodities. It sees only surface, only what can be possessed. Under this gaze, we learn to hide.</p>
+                        <div class="journal-whisper">The hunger that hollows what it touches.</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="gaze-card judging" onclick="flipCard(this)">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="card-icon">⚖️</div>
+                        <h3 class="card-title">The Judging Gaze</h3>
+                    </div>
+                    <div class="card-back">
+                        <p>The Judging Gaze measures us against impossible standards, finds us lacking, assigns worth based on performance. It sees only flaws, only failures. Under this gaze, we learn to shrink.</p>
+                        <div class="journal-whisper">The scale that weighs souls and finds them wanting.</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="gaze-card indifferent" onclick="flipCard(this)">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="card-icon">😶</div>
+                        <h3 class="card-title">The Indifferent Gaze</h3>
+                    </div>
+                    <div class="card-back">
+                        <p>The Indifferent Gaze passes over us like we are furniture, like we are background noise in someone else's story. It sees nothing at all. Under this gaze, we learn to scream silently.</p>
+                        <div class="journal-whisper">The void that erases us while we still breathe.</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="gaze-card sacred" onclick="flipCard(this)">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="card-icon">🪷</div>
+                        <h3 class="card-title">The Sacred Gaze</h3>
+                    </div>
+                    <div class="card-back">
+                        <p>The Sacred Gaze sees our wholeness, our becoming, our inherent worth. It witnesses without claiming, loves without conditions. Under this gaze, we learn to bloom.</p>
+                        <div class="journal-whisper">The light that sees the seed within the wound.</div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="card-back">
-          <p>The Consuming Gaze devours what it sees, takes without asking, reduces us to appetites and commodities. It sees only surface, only what can be possessed. Under this gaze, we learn to hide.</p>
-          <div class="journal-whisper">The hunger that hollows what it touches.</div>
+        
+        <div class="archetypes-reflection">
+            <p>We are not victims of these gazes—we are also their authors. The question becomes: Which lens will you choose?</p>
         </div>
-      </div>
-    </div>
-
-    <!-- Judging Gaze -->
-    <div class="gaze-card judging" onclick="flipCard(this)">
-      <div class="card-inner">
-        <div class="card-front">
-          <div class="card-icon animated-icon">👮‍♂️</div>
-          <h3 class="card-title">The Judging Gaze</h3>
+        
+        <div class="transition-line">
+            And now, the deepest mirror. The one that remembers what sacred looks like.
         </div>
-        <div class="card-back">
-          <p>The Judging Gaze measures us against impossible standards, finds us lacking, assigns worth based on performance. It sees only flaws, only failures. Under this gaze, we learn to shrink.</p>
-          <div class="journal-whisper">The scale that weighs souls and finds them wanting.</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Indifferent Gaze -->
-    <div class="gaze-card indifferent" onclick="flipCard(this)">
-      <div class="card-inner">
-        <div class="card-front">
-          <div class="card-icon animated-icon">🚔</div>
-          <h3 class="card-title">The Indifferent Gaze</h3>
-        </div>
-        <div class="card-back">
-          <p>The Indifferent Gaze passes over us like we are furniture, like we are background noise in someone else's story. It sees nothing at all. Under this gaze, we learn to scream silently.</p>
-          <div class="journal-whisper">The void that erases us while we still breathe.</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Sacred Gaze -->
-    <div class="gaze-card sacred" onclick="flipCard(this)">
-      <div class="card-inner">
-        <div class="card-front">
-          <div class="card-icon animated-icon">🕊️</div>
-          <h3 class="card-title">The Sacred Gaze</h3>
-        </div>
-        <div class="card-back">
-          <p>The Sacred Gaze sees our wholeness, our becoming, our inherent worth. It witnesses without claiming, loves without conditions. Under this gaze, we learn to bloom.</p>
-          <div class="journal-whisper">The light that sees the seed within the wound.</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="archetypes-reflection">
-    <p>We are not victims of these gazes—we are also their authors. The question becomes: Which lens will you choose?</p>
-  </div>
-
-  <div class="transition-line">
-    And now, the deepest mirror. The one that remembers what sacred looks like.
-  </div>
-</section>
-
+    </section>
 
     <!-- Section 4: Sacred Feminine -->
     <section class="section sacred-feminine" id="section-3">
@@ -883,25 +998,16 @@
                 <p>With love and fierce hope,<br>
                 <em>Those who chose to shine</em></p>
                 
-                <input type="text" class="signature-input" id="signature-input" placeholder="Your signature here..." maxlength="50">
-                <br>
-                <button class="signature-submit" id="signature-submit" onclick="submitSignature()">Sign the Manifesto</button>
+                <input type="text" class="signature-input" placeholder="Your signature here..." id="signature-input">
+                <button class="signature-submit" onclick="submitSignature()">Sign & Seal</button>
+                
+                <div class="thank-you-note" id="thank-you-note" style="display: none;">
+                    <p>Thank you, <span class="saved-signature" id="saved-name"></span>, for adding your light to this sacred mirror.</p>
+                    <p><em>Your signature has been witnessed and remembered.</em></p>
+                </div>
             </div>
         </div>
     </section>
-
-    <!-- Thank You Modal -->
-    <div class="thank-you-modal" id="thank-you-modal">
-        <div class="thank-you-content">
-            <h3 class="thank-you-title">Thank You</h3>
-            <p class="thank-you-message">
-                Dear <span class="saved-signature" id="modal-signature"></span>,<br><br>
-                Your signature has been witnessed and remembered in this sacred mirror. You have joined the chorus of those who choose to be visible, magnificent, and real.<br><br>
-                <em>May your light illuminate the path for others.</em>
-            </p>
-            <button class="close-modal" onclick="closeModal()">Continue the Journey</button>
-        </div>
-    </div>
 
     <script>
         let currentSection = 0;
@@ -1008,14 +1114,22 @@
             });
         });
 
-        // Card flip function
+        // Card flip function with enhanced interaction
         function flipCard(card) {
             card.classList.toggle('flipped');
+            
+            // Add a subtle scale effect during flip
+            card.style.transform = 'scale(1.02)';
+            setTimeout(() => {
+                card.style.transform = '';
+            }, 400);
         }
 
-        // Handle signature input
-        function handleSignature(input) {
+        // Handle signature submission
+        function submitSignature() {
+            const input = document.getElementById('signature-input');
             const signature = input.value.trim();
+            
             if (signature.length > 2) {
                 // Save signature temporarily (in memory)
                 sessionStorage.setItem('miroir_signature', signature);
@@ -1025,14 +1139,20 @@
                 const savedName = document.getElementById('saved-name');
                 
                 savedName.textContent = signature;
-                thankYouNote.classList.add('visible');
+                thankYouNote.style.display = 'block';
+                setTimeout(() => {
+                    thankYouNote.classList.add('visible');
+                }, 100);
+                
+                // Disable the input and button
+                input.disabled = true;
+                document.querySelector('.signature-submit').disabled = true;
+                document.querySelector('.signature-submit').textContent = 'Sealed ✓';
                 
                 // Create constellation effect
                 createConstellation();
             } else {
-                // Hide thank you note if signature is too short
-                const thankYouNote = document.getElementById('thank-you-note');
-                thankYouNote.classList.remove('visible');
+                alert('Please enter a name with at least 3 characters.');
             }
         }
 
@@ -1040,13 +1160,21 @@
         function loadSavedSignature() {
             const savedSignature = sessionStorage.getItem('miroir_signature');
             if (savedSignature) {
-                const signatureInput = document.querySelector('.signature-input');
+                const signatureInput = document.getElementById('signature-input');
                 const thankYouNote = document.getElementById('thank-you-note');
                 const savedName = document.getElementById('saved-name');
+                const submitButton = document.querySelector('.signature-submit');
                 
                 signatureInput.value = savedSignature;
+                signatureInput.disabled = true;
+                submitButton.disabled = true;
+                submitButton.textContent = 'Sealed ✓';
+                
                 savedName.textContent = savedSignature;
-                thankYouNote.classList.add('visible');
+                thankYouNote.style.display = 'block';
+                setTimeout(() => {
+                    thankYouNote.classList.add('visible');
+                }, 100);
             }
         }
 
