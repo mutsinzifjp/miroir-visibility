@@ -25,14 +25,32 @@
             --gold-accent: #fbbf24;
         }
         
+        /* System theme detection */
+        @media (prefers-color-scheme: light) {
+            :root {
+                --dark-base: #f8fafc;
+                --dark-surface: #ffffff;
+                --pure-white: #1f2937;
+                --soft-white: #374151;
+                --gray-text: #4b5563;
+            }
+        }
+        
+        /* Manual theme overrides */
         [data-theme="light"] {
             --dark-base: #f8fafc;
             --dark-surface: #ffffff;
             --pure-white: #1f2937;
             --soft-white: #374151;
             --gray-text: #4b5563;
-            --primary-red: #dc2626;
-            --accent-red: #ef4444;
+        }
+        
+        [data-theme="dark"] {
+            --dark-base: #000000;
+            --dark-surface: #0f0f0f;
+            --pure-white: #ffffff;
+            --soft-white: #f8fafc;
+            --gray-text: #d1d5db;
         }
         
         html {
@@ -381,9 +399,10 @@
         
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
             gap: clamp(2rem, 4vw, 3rem);
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto 3rem;
             padding: 0 1rem;
             place-items: center;
@@ -391,7 +410,7 @@
         
         .gaze-card {
             width: 100%;
-            max-width: 400px;
+            max-width: 450px;
             height: 400px;
             position: relative;
             cursor: pointer;
@@ -741,24 +760,6 @@
             opacity: 0.7;
         }
         
-        .signature-input {
-            width: 100%;
-            background: transparent;
-            border: none;
-            border-bottom: 2px dashed var(--primary-red);
-            color: var(--accent-red);
-            font-family: 'Playfair Display', serif;
-            font-size: 1.1rem;
-            padding: 0.8rem 0;
-            margin: 1rem 0;
-            font-style: italic;
-        }
-        
-        .signature-input:focus {
-            outline: none;
-            box-shadow: 0 2px 10px rgba(220, 38, 38, 0.3);
-        }
-        
         .signature-submit {
             background: transparent;
             border: 2px solid var(--primary-red);
@@ -913,14 +914,15 @@
             
             .cards-grid {
                 grid-template-columns: 1fr;
+                grid-template-rows: repeat(4, 1fr);
                 max-width: 100%;
-                gap: 2rem;
+                gap: 1.5rem;
             }
             
             .gaze-card {
                 max-width: 100%;
                 height: auto;
-                min-height: 350px;
+                min-height: 300px;
             }
             
             /* Mobile: Show content without flipping */
@@ -953,13 +955,20 @@
             }
         }
         
+        @media (min-width: 769px) {
+            .cards-grid {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(2, 1fr);
+            }
+        }
+        
         @media (max-width: 480px) {
             .section {
                 padding: 1.5rem 0.5rem;
             }
             
             .gaze-card {
-                min-height: 300px;
+                min-height: 280px;
             }
             
             .card-front, .card-back {
@@ -972,7 +981,7 @@
         }
     </style>
 </head>
-<body data-theme="dark">
+<body>
     <!-- Theme Toggle Button -->
     <div class="theme-toggle" onclick="toggleTheme()">
         <span>🌓</span>
@@ -1195,14 +1204,12 @@
                         <input type="email" id="email" name="email" class="form-input" required placeholder="Enter your email address">
                     </div>
                     
-                    <input type="text" id="signature" class="signature-input" placeholder="Your signature here..." readonly>
-                    
                     <button type="submit" class="signature-submit" id="submitBtn">Sign & Seal</button>
                 </form>
                 
                 <div class="thank-you-note" id="thank-you-note">
-                    <p>Thank you, <span class="saved-signature" id="saved-name"></span>. Sealed ✓</p>
-                    <p><em>Your signature has been witnessed and remembered.</em></p>
+                    <p>Thank you, <span class="saved-signature" id="saved-name"></span>, for sealing this with us. Sealed ✓</p>
+                    <p><em>Your voice has been witnessed and remembered.</em></p>
                 </div>
             </div>
         </div>
@@ -1233,10 +1240,16 @@
             localStorage.setItem('theme', newTheme);
         }
 
-        // Load saved theme
+        // Load saved theme or detect system preference
         function loadTheme() {
-            const savedTheme = localStorage.getItem('theme') || 'dark';
-            document.body.setAttribute('data-theme', savedTheme);
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                document.body.setAttribute('data-theme', savedTheme);
+            } else {
+                // Use system preference
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                document.body.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+            }
         }
 
         // Create particle background
@@ -1432,7 +1445,6 @@
             const submitBtn = document.getElementById('submitBtn');
             const thankYouNote = document.getElementById('thank-you-note');
             const savedName = document.getElementById('saved-name');
-            const signatureInput = document.getElementById('signature');
             
             if (!firstName || !email) {
                 alert('Please enter both your first name and email address.');
@@ -1458,8 +1470,6 @@
                 if (response.ok) {
                     // Success
                     savedName.textContent = firstName;
-                    signatureInput.value = firstName;
-                    signatureInput.disabled = true;
                     
                     // Show thank you note
                     thankYouNote.style.display = 'block';
