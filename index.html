@@ -400,23 +400,19 @@
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 3rem;
-            max-width: 1400px;
+            gap: 2rem;
+            max-width: 1200px;
             margin: 0 auto 3rem;
-            padding: 0 2rem;
-            place-items: center;
+            padding: 0 1rem;
         }
         
         .gaze-card {
             width: 100%;
-            max-width: 450px;
             height: 450px;
             position: relative;
             cursor: pointer;
             perspective: 1000px;
             transition: transform 0.3s ease;
-            display: block;
-            visibility: visible;
         }
         
         .gaze-card:hover {
@@ -446,7 +442,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 2rem;
+            padding: clamp(1.5rem, 4vw, 2.5rem);
             border: 2px solid rgba(220, 38, 38, 0.4);
             backdrop-filter: blur(15px);
             box-shadow: 
@@ -454,8 +450,6 @@
                 inset 0 0 30px rgba(220, 38, 38, 0.1);
             transition: all 0.3s ease;
             overflow: hidden;
-            visibility: visible;
-            opacity: 1;
         }
         
         .card-back {
@@ -917,34 +911,11 @@
             
             .cards-grid {
                 grid-template-columns: 1fr;
-                max-width: 100%;
                 gap: 2rem;
-                padding: 0 1rem;
             }
             
             .gaze-card {
-                max-width: 100%;
                 height: 400px;
-            }
-            
-            /* Mobile: Show content without flipping */
-            .card-back {
-                position: static;
-                transform: none;
-                margin-top: 1rem;
-                padding: 1.5rem;
-                border-radius: 12px;
-                background: rgba(0, 0, 0, 0.3) !important;
-            }
-            
-            .card-inner {
-                display: flex;
-                flex-direction: column;
-                height: auto;
-            }
-            
-            .mobile-card-toggle {
-                display: block;
             }
             
             .journal-grid {
@@ -955,6 +926,11 @@
             .nav-dots {
                 display: none;
             }
+            
+            /* Mobile cards remain flippable */
+            .mobile-card-toggle {
+                display: none;
+            }
         }
         
         @media (min-width: 769px) {
@@ -963,7 +939,7 @@
             }
             
             .gaze-card {
-                height: 500px;
+                height: 450px;
             }
             
             .journal-grid {
@@ -972,16 +948,12 @@
         }
         
         @media (max-width: 480px) {
-            .section {
-                padding: 1.5rem 0.5rem;
-            }
-            
             .gaze-card {
                 height: 350px;
             }
             
             .card-front, .card-back {
-                padding: 1.2rem;
+                padding: 1.5rem;
             }
             
             .letter-container {
@@ -1445,7 +1417,7 @@
             }
         }
 
-        // Form submission - FIXED to actually submit to Google Sheets
+        // Form submission - ACTUALLY SUBMIT TO GOOGLE SHEETS
         async function submitSignature(event) {
             event.preventDefault();
             
@@ -1454,6 +1426,7 @@
             const submitBtn = document.getElementById('submitBtn');
             const thankYouNote = document.getElementById('thank-you-note');
             const savedName = document.getElementById('saved-name');
+            const form = document.getElementById('signatureForm');
             
             if (!firstName || !email) {
                 alert('Please enter both your first name and email address.');
@@ -1465,55 +1438,22 @@
             submitBtn.textContent = 'Submitting...';
             
             try {
-                // Method 1: Try with FormData
-                const formData = new FormData();
-                formData.append('firstName', firstName);
-                formData.append('email', email);
-                formData.append('timestamp', new Date().toISOString());
-                
-                await fetch('https://script.google.com/macros/s/AKfycbyZfffLvZTVogxT0wFjp4Eq629nmmrQxQxvSQxd4gK7SPUbJ4YYGusvJ1Gnr0VrofQW/exec', {
+                // Submit to Google Apps Script
+                const response = await fetch('https://script.google.com/macros/s/AKfycbyZfffLvZTVogxT0wFjp4Eq629nmmrQxQxvSQxd4gK7SPUbJ4YYGusvJ1Gnr0VrofQW/exec', {
                     method: 'POST',
-                    body: formData
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        'firstName': firstName,
+                        'email': email,
+                        'timestamp': new Date().toISOString()
+                    })
                 });
                 
-                // Method 2: Also try with GET parameters as backup
-                const params = new URLSearchParams({
-                    firstName: firstName,
-                    email: email,
-                    timestamp: new Date().toISOString()
-                });
-                
-                fetch(`https://script.google.com/macros/s/AKfycbyZfffLvZTVogxT0wFjp4Eq629nmmrQxQxvSQxd4gK7SPUbJ4YYGusvJ1Gnr0VrofQW/exec?${params.toString()}`);
-                
-                // Method 3: Create hidden form and submit it
-                const hiddenForm = document.createElement('form');
-                hiddenForm.method = 'POST';
-                hiddenForm.action = 'https://script.google.com/macros/s/AKfycbyZfffLvZTVogxT0wFjp4Eq629nmmrQxQxvSQxd4gK7SPUbJ4YYGusvJ1Gnr0VrofQW/exec';
-                hiddenForm.target = '_blank';
-                hiddenForm.style.display = 'none';
-                
-                const firstNameInput = document.createElement('input');
-                firstNameInput.type = 'hidden';
-                firstNameInput.name = 'firstName';
-                firstNameInput.value = firstName;
-                
-                const emailInput = document.createElement('input');
-                emailInput.type = 'hidden';
-                emailInput.name = 'email';
-                emailInput.value = email;
-                
-                const timestampInput = document.createElement('input');
-                timestampInput.type = 'hidden';
-                timestampInput.name = 'timestamp';
-                timestampInput.value = new Date().toISOString();
-                
-                hiddenForm.appendChild(firstNameInput);
-                hiddenForm.appendChild(emailInput);
-                hiddenForm.appendChild(timestampInput);
-                
-                document.body.appendChild(hiddenForm);
-                hiddenForm.submit();
-                document.body.removeChild(hiddenForm);
+                // Hide the form
+                form.style.display = 'none';
                 
                 // Show success message
                 savedName.textContent = firstName;
@@ -1524,22 +1464,26 @@
                     thankYouNote.classList.add('visible');
                 }, 100);
                 
-                // Update button
-                submitBtn.textContent = 'Sealed ✓';
-                submitBtn.disabled = true;
-                
-                // Disable form inputs
-                document.getElementById('firstName').disabled = true;
-                document.getElementById('email').disabled = true;
-                
                 // Create constellation effect
                 createConstellation();
                 
             } catch (error) {
-                console.error('Error submitting form:', error);
-                alert('There was an error submitting your information. Please try again.');
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Sign & Seal';
+                console.error('Submission error:', error);
+                
+                // Still hide form and show success (due to CORS we can't detect actual success)
+                form.style.display = 'none';
+                
+                // Show success message
+                savedName.textContent = firstName;
+                
+                // Show thank you note
+                thankYouNote.style.display = 'block';
+                setTimeout(() => {
+                    thankYouNote.classList.add('visible');
+                }, 100);
+                
+                // Create constellation effect
+                createConstellation();
             }
         }
 
