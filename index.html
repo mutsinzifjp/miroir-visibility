@@ -409,8 +409,8 @@
         
         .gaze-card {
             width: 100%;
-            max-width: 450px;
-            height: 450px;
+            max-width: 400px;
+            aspect-ratio: 1;
             position: relative;
             cursor: pointer;
             perspective: 1000px;
@@ -914,7 +914,7 @@
             .cards-grid {
                 grid-template-columns: 1fr;
                 max-width: 100%;
-                gap: 1.5rem;
+                gap: 2rem;
             }
             
             .gaze-card {
@@ -956,10 +956,6 @@
         @media (min-width: 769px) {
             .cards-grid {
                 grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .gaze-card {
-                height: 450px;
             }
         }
         
@@ -1458,63 +1454,62 @@
             
             try {
                 // Submit to Google Sheets
-                const formData = new URLSearchParams();
+                const formData = new FormData();
                 formData.append('firstName', firstName);
                 formData.append('email', email);
                 formData.append('timestamp', new Date().toISOString());
                 
-                const response = await fetch('https://script.google.com/macros/s/AKfycbyZfffLvZTVogxT0wFjp4Eq629nmmrQxQxvSQxd4gK7SPUbJ4YYGusvJ1Gnr0VrofQW/exec', {
+                // Submit to Google Sheets using fetch
+                fetch('https://script.google.com/macros/s/AKfycbyZfffLvZTVogxT0wFjp4Eq629nmmrQxQxvSQxd4gK7SPUbJ4YYGusvJ1Gnr0VrofQW/exec', {
                     method: 'POST',
-                    mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
                     body: formData
+                }).then(() => {
+                    // Show success message regardless of response due to CORS
+                    savedName.textContent = firstName;
+                    
+                    // Show thank you note
+                    thankYouNote.style.display = 'block';
+                    setTimeout(() => {
+                        thankYouNote.classList.add('visible');
+                    }, 100);
+                    
+                    // Update button
+                    submitBtn.textContent = 'Sealed ✓';
+                    submitBtn.disabled = true;
+                    
+                    // Disable form inputs
+                    document.getElementById('firstName').disabled = true;
+                    document.getElementById('email').disabled = true;
+                    
+                    // Create constellation effect
+                    createConstellation();
+                }).catch(() => {
+                    // Even on error, show success since CORS blocks response
+                    savedName.textContent = firstName;
+                    
+                    // Show thank you note
+                    thankYouNote.style.display = 'block';
+                    setTimeout(() => {
+                        thankYouNote.classList.add('visible');
+                    }, 100);
+                    
+                    // Update button
+                    submitBtn.textContent = 'Sealed ✓';
+                    submitBtn.disabled = true;
+                    
+                    // Disable form inputs
+                    document.getElementById('firstName').disabled = true;
+                    document.getElementById('email').disabled = true;
+                    
+                    // Create constellation effect
+                    createConstellation();
                 });
-                
-                // Since we're using no-cors, we can't check response status
-                // Assume success and show thank you message
-                savedName.textContent = firstName;
-                
-                // Show thank you note
-                thankYouNote.style.display = 'block';
-                setTimeout(() => {
-                    thankYouNote.classList.add('visible');
-                }, 100);
-                
-                // Update button
-                submitBtn.textContent = 'Sealed ✓';
-                submitBtn.disabled = true;
-                
-                // Disable form inputs
-                document.getElementById('firstName').disabled = true;
-                document.getElementById('email').disabled = true;
-                
-                // Create constellation effect
-                createConstellation();
                 
             } catch (error) {
                 console.error('Error submitting form:', error);
-                
-                // Even if there's an error, show success since no-cors prevents us from knowing
-                savedName.textContent = firstName;
-                
-                // Show thank you note
-                thankYouNote.style.display = 'block';
-                setTimeout(() => {
-                    thankYouNote.classList.add('visible');
-                }, 100);
-                
-                // Update button
-                submitBtn.textContent = 'Sealed ✓';
-                submitBtn.disabled = true;
-                
-                // Disable form inputs
-                document.getElementById('firstName').disabled = true;
-                document.getElementById('email').disabled = true;
-                
-                // Create constellation effect
-                createConstellation();
+                alert('There was an error submitting your information. Please try again.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Sign & Seal';
             }
         }
 
